@@ -1,109 +1,94 @@
-from cshogi import *
+import os
+from concurrent.futures import ThreadPoolExecutor
+import numpy as np
+import logging
+import torch
 
-# 移動方向を表す定数
-MOVE_DIRECTION = [
-    UP, UP_LEFT, UP_RIGHT, LEFT, RIGHT, DOWN, DOWN_LEFT, DOWN_RIGHT,
-    UP2_LEFT, UP2_RIGHT,
-    UP_PROMOTE, UP_LEFT_PROMOTE, UP_RIGHT_PROMOTE, LEFT_PROMOTE, RIGHT_PROMOTE, DOWN_PROMOTE, DOWN_LEFT_PROMOTE, DOWN_RIGHT_PROMOTE,
-    UP2_LEFT_PROMOTE, UP2_RIGHT_PROMOTE
-] = range(20)
-
-# 入力特徴量の数
-FEATURES_NUM = len(PIECE_TYPES) * 2 + sum(MAX_PIECES_IN_HAND) * 2
-
-# 移動を表すラベルの数
-MOVE_PLANES_NUM = len(MOVE_DIRECTION) + len(HAND_PIECES)
-MOVE_LABELS_NUM = MOVE_PLANES_NUM * 81
-
-# 入力特徴量を作成
+from cshogi import Board, HuffmanCodedPosAndEval
+from pydlshogi2.features import FEATURES_NUM, make_input_features, make_move_label, make_result
 
 
-def make_input_features(board, features):
-    # 入力特徴量を0に初期化
-    features.fill(0)
+class HcpeDataLoader:
+    def __init__(self, files, batch_size, device, shuffle=False):
+        self.load(files)
+        self.batch_size = batch_size
+        self.device = device
+        self.shuffle = shuffle
 
-    # 盤上の駒
-    if board.turn == BLACK:
-        board.piece_planes(features)
-        pieces_in_hand = board.pieces_in_hand
-    else:
-        board.piece_planes_rotate(features)
-        pieces_in_hand = reversed(board.pieces_in_hand)
-    # 持ち駒
-    i = 28
-    for hands in pieces_in_hand:
-        for num, max_num in zip(hands, MAX_PIECES_IN_HAND):
-            features[i:i+num].fill(1)
-            i += max_num
+        self.torch_features = torch.empty(
+            (batch_size, FEATURES_NUM, 9, 9), dtype=torch.float32, pin_memory=True)
+        self.torch_move_label = torch.empty(
+            (batch_size), dtype=torch.int64, pin_memory=True)
+        self.torch_result = torch.empty(
+            (batch_size, 1), dtype=torch.float32, pin_memory=True)
 
-# 移動を表すラベルを作成
+        self.features = self.torch_features.numpy()
+        self.move_label = self.torch_move_label.numpy()
+        self.result = self.torch_result.numpy().reshape(-1)
 
+        self.i = 0
+        self.executor = ThreadPoolExecutor(max_workers=1)
 
-def make_move_label(move, color):
-    if not move_is_drop(move):  # 駒の移動
-        to_sq = move_to(move)
-        from_sq = move_from(move)
+        self.board = Board()
 
-        # 後手の場合盤を回転
-        if color == WHITE:
-            to_sq = 80 - to_sq
-            from_sq = 80 - from_sq
+    def load(self, files):
+        data = []
+        if type(files) not in [list, tuple]:
+            files = [files]
+        for path in files:
+            if os.path.exists(path):
+                logging.info(path)
+                data.append(np.fromfile(path, dtype=HuffmanCodedPosAndEval))
+            else:
+                logging.warn('{} not found, skipping'.format(path))
+        self.data = np.concatenate(data)
 
-        # 移動方向
-        to_x, to_y = divmod(to_sq, 9)
-        from_x, from_y = divmod(from_sq, 9)
-        dir_x = to_x - from_x
-        dir_y = to_y - from_y
-        if dir_y < 0:
-            if dir_x == 0:
-                move_direction = UP
-            elif dir_y == -2 and dir_x == -1:
-                move_direction = UP2_RIGHT
-            elif dir_y == -2 and dir_x == 1:
-                move_direction = UP2_LEFT
-            elif dir_x < 0:
-                move_direction = UP_RIGHT
-            else:  # dir_x > 0
-                move_direction = UP_LEFT
-        elif dir_y == 0:
-            if dir_x < 0:
-                move_direction = RIGHT
-            else:  # dir_x > 0
-                move_direction = LEFT
-        else:  # dir_y > 0
-            if dir_x == 0:
-                move_direction = DOWN
-            elif dir_x < 0:
-                move_direction = DOWN_RIGHT
-            else:  # dir_x > 0
-                move_direction = DOWN_LEFT
+    def mini_batch(self, hcpevec):
+        self.features.fill(0)
+        for i, hcpe in enumerate(hcpevec):
+            self.board.set_hcp(hcpe['hcp'])
+            make_input_features(self.board, self.features[i])
+            self.move_label[i] = make_move_label(
+                hcpe['bestMove16'], self.board.turn)
+            self.result[i] = make_result(hcpe['gameResult'], self.board.turn)
 
-        # 成り
-        if move_is_promotion(move):
-            move_direction += 10
-    else:  # 駒打ち
-        to_sq = move_to(move)
-        # 後手の場合盤を回転
-        if color == WHITE:
-            to_sq = 80 - to_sq
+        if self.device.type == 'cpu':
+            return (self.torch_features.clone(),
+                    self.torch_move_label.clone(),
+                    self.torch_result.clone(),
+                    )
+        else:
+            return (self.torch_features.to(self.device),
+                    self.torch_move_label.to(self.device),
+                    self.torch_result.to(self.device),
+                    )
 
-        # 駒打ちの移動方向
-        move_direction = len(MOVE_DIRECTION) + move_drop_hand_piece(move)
+    def sample(self):
+        return self.mini_batch(np.random.choice(self.data, self.batch_size, replace=False))
 
-    return move_direction * 81 + to_sq
+    def pre_fetch(self):
+        hcpevec = self.data[self.i:self.i+self.batch_size]
+        self.i += self.batch_size
+        if len(hcpevec) < self.batch_size:
+            return
 
-# 対局結果から報酬を作成
+        self.f = self.executor.submit(self.mini_batch, hcpevec)
 
+    def __len__(self):
+        return len(self.data)
 
-def make_result(game_result, color):
-    if color == BLACK:
-        if game_result == BLACK_WIN:
-            return 1
-        if game_result == WHITE_WIN:
-            return 0
-    else:
-        if game_result == BLACK_WIN:
-            return 0
-        if game_result == WHITE_WIN:
-            return 1
-    return 0.5
+    def __iter__(self):
+        self.i = 0
+        if self.shuffle:
+            np.random.shuffle(self.data)
+        self.pre_fetch()
+        return self
+
+    def __next__(self):
+        if self.i > len(self.data):
+            raise StopIteration()
+
+        result = self.f.result()
+        self.pre_fetch()
+
+        return result
