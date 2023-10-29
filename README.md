@@ -26,3 +26,27 @@ python3 ./scripts/csa_to_hcpe.py kifu/ kifu/kifu_2021-2023_r3500_eval5000.hcpe k
 mkdir checkpoints/
 python3 -m bonne.train kifu/kifu_2021-2023_r3500_eval5000.hcpe kifu/kifu_2021-2023_r3500_eval5000_test.hcpe -e 1 -b 2048 --lr 0.001 --eval_interval 1000
 ```
+
+## Download external models
+
+```
+cd external-models
+wget https://github.com/TadaoYamaoka/DeepLearningShogi/releases/download/dr2_exhi/model-dr2_exhi.zip
+unzip -o model-dr2_exhi.zip
+```
+
+## Environment
+
+```
+❯ nvidia-smi -q | head
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Sun Oct 29 10:50:34 2023
+Driver Version                            : 470.42.01
+CUDA Version                              : 11.4
+
+Attached GPUs                             : 1
+GPU 00000000:01:00.0
+    Product Name                          : NVIDIA GeForce RTX 3070
+```

@@ -163,3 +163,4 @@ cython_debug/
 
 kifu/
 checkpoints/
+external-models/
