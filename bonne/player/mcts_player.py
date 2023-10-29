@@ -2,10 +2,10 @@ import numpy as np
 import torch
 
 from cshogi import Board, BLACK, NOT_REPETITION, REPETITION_DRAW, REPETITION_WIN, REPETITION_SUPERIOR, move_to_usi
-from pydlshogi2.features import FEATURES_NUM, make_input_features, make_move_label
-from pydlshogi2.uct.uct_node import NodeTree
-from pydlshogi2.network.policy_value_resnet import PolicyValueNetwork
-from pydlshogi2.player.base_player import BasePlayer
+from bonne.features import FEATURES_NUM, make_input_features, make_move_label
+from bonne.uct.uct_node import NodeTree
+from bonne.network.policy_value_resnet import PolicyValueNetwork
+from bonne.player.base_player import BasePlayer
 
 import time
 import math
