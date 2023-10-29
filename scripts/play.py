@@ -1,6 +1,6 @@
 import argparse
-import cshogi.web.app
 import os
+from web import app
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
     args = parser.parse_args()
     wd = os.getcwd()
 
-    cshogi.web.app.run(
+    app.run(
         engine1=os.path.join(wd, args.engine1),
         engine2=os.path.join(wd, args.engine2),
         options1={'modelfile': args.model_file1},
