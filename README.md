@@ -1,6 +1,12 @@
 # bonne
 Shogi AI with deep learning
 
+## Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
 ## Download kifu from floodgate
 
 ```bash
