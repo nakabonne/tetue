@@ -7,3 +7,6 @@ torchaudio
 
 cshogi
 flask
+onnxruntime==1.16.0
+
+portpicker

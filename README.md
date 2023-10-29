@@ -35,6 +35,12 @@ wget https://github.com/TadaoYamaoka/DeepLearningShogi/releases/download/dr2_exh
 unzip -o model-dr2_exhi.zip
 ```
 
+## Play
+
+```
+python3 scripts/play.py checkpoints/checkpoint-001.pth external-models/model-dr2_exhi.onnx --name1=bonne --name2=GCT
+```
+
 ## Environment
 
 ```
