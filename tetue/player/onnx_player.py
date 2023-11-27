@@ -1,7 +1,7 @@
 import onnxruntime
 import numpy as np
 
-from bonne.player.mcts_player import MCTSPlayer
+from tetue.player.mcts_player import MCTSPlayer
 from cshogi.dlshogi import make_input_features, make_move_label, FEATURES1_NUM, FEATURES2_NUM
 
 

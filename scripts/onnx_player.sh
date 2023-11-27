@@ -1,2 +1,2 @@
 #!/bin/sh
-python -m bonne.player.onnx_player
+python -m tetue.player.onnx_player

@@ -1,6 +1,6 @@
 from distutils.core import setup
 
 setup(
-    name='python-bonne',
-    packages=['bonne']
+    name='python-tetue',
+    packages=['tetue']
 )

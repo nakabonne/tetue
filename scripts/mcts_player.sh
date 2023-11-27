@@ -1,2 +1,2 @@
 #!/bin/sh
-python -m bonne.player.mcts_player
+python -m tetue.player.mcts_player

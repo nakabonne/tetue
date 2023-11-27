@@ -5,7 +5,7 @@ import logging
 import torch
 
 from cshogi import Board, HuffmanCodedPosAndEval
-from bonne.features import FEATURES_NUM, make_input_features, make_move_label, make_result
+from tetue.features import FEATURES_NUM, make_input_features, make_move_label, make_result
 
 
 class HcpeDataLoader:

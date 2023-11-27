@@ -2,10 +2,10 @@ import numpy as np
 import torch
 
 from cshogi import Board, BLACK, NOT_REPETITION, REPETITION_DRAW, REPETITION_WIN, REPETITION_SUPERIOR, move_to_usi
-from bonne.features import FEATURES_NUM, make_input_features, make_move_label
-from bonne.uct.uct_node import NodeTree
-from bonne.network.policy_value_resnet import PolicyValueNetwork
-from bonne.player.base_player import BasePlayer
+from tetue.features import FEATURES_NUM, make_input_features, make_move_label
+from tetue.uct.uct_node import NodeTree
+from tetue.network.policy_value_resnet import PolicyValueNetwork
+from tetue.player.base_player import BasePlayer
 
 import time
 import math
@@ -78,7 +78,7 @@ class EvalQueueElement:
 
 class MCTSPlayer(BasePlayer):
     # USIエンジンの名前
-    name = 'bonne'
+    name = 'tetue'
     # TODO: Make model file variable
     DEFAULT_MODELFILE = 'checkpoints/checkpoint-001.pth'
 

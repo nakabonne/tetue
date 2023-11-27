@@ -1,4 +1,4 @@
-# bonne
+# Tetue
 USI Shogi engine powered by deep learning.
 
 ## Install dependencies
@@ -24,7 +24,7 @@ python3 ./scripts/csa_to_hcpe.py kifu/ kifu/kifu_2021-2023_r3500_eval5000.hcpe k
 
 ```
 mkdir checkpoints/
-python3 -m bonne.train kifu/kifu_2021-2023_r3500_eval5000.hcpe kifu/kifu_2021-2023_r3500_eval5000_test.hcpe -e 1 -b 2048 --lr 0.001 --eval_interval 1000
+python3 -m tetue.train kifu/kifu_2021-2023_r3500_eval5000.hcpe kifu/kifu_2021-2023_r3500_eval5000_test.hcpe -e 1 -b 2048 --lr 0.001 --eval_interval 1000
 ```
 
 ## Download external models
@@ -38,7 +38,7 @@ unzip -o model-dr2_exhi.zip
 ## Run the engine
 
 ```
-python -m bonne.player.mcts_player
+python -m tetue.player.mcts_player
 ```
 
 It will start wating for input from stdin.

@@ -3,8 +3,8 @@ import logging
 import torch
 import torch.optim as optim
 
-from bonne.network.policy_value_resnet import PolicyValueNetwork
-from bonne.dataloader import HcpeDataLoader
+from tetue.network.policy_value_resnet import PolicyValueNetwork
+from tetue.dataloader import HcpeDataLoader
 
 parser = argparse.ArgumentParser(description='Train policy value network')
 parser.add_argument('train_data', type=str, nargs='+',
