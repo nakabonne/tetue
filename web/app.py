@@ -362,23 +362,6 @@ def run(engine1: Optional[str] = None, engine2: Optional[str] = None, options1: 
     server.serve_forever()
 
 
-def colab(engine1=None, engine2=None, options1={}, options2={}, name1=None, name2=None, byoyomi=None, time=None, inc=None, draw=256, csa=None):
-    from multiprocessing import Process
-    import portpicker
-    from google.colab import output
-
-    global proc
-    if 'proc' in globals():
-        proc.terminate()
-        proc.join()
-
-    port = portpicker.pick_unused_port()
-    proc = Process(target=run, args=(engine1, engine2, options1, options2,
-                   name1, name2, byoyomi, time, inc, draw, csa, 'localhost', port))
-    proc.start()
-    output.serve_kernel_port_as_iframe(port, height='680')
-
-
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
