@@ -5,7 +5,7 @@ from cshogi import Board, BLACK, NOT_REPETITION, REPETITION_DRAW, REPETITION_WIN
 from tetue.features import FEATURES_NUM, make_input_features, make_move_label
 from tetue.uct.uct_node import NodeTree
 from tetue.network.policy_value_resnet import PolicyValueNetwork
-from tetue.player.base_player import BasePlayer
+from tetue.usi.base_usi import BaseUSI
 
 import time
 import math
@@ -76,7 +76,7 @@ class EvalQueueElement:
         self.color = color
 
 
-class MCTSPlayer(BasePlayer):
+class MCTSUSI(BaseUSI):
     # USIエンジンの名前
     name = 'tetue'
     # TODO: Make model file variable
@@ -659,5 +659,5 @@ class MCTSPlayer(BasePlayer):
 
 
 if __name__ == '__main__':
-    player = MCTSPlayer()
+    player = MCTSUSI()
     player.run()

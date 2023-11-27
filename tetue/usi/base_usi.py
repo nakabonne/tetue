@@ -2,7 +2,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 
 
-class BasePlayer:
+class BaseUSI:
     def __init__(self):
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.future = None
