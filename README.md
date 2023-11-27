@@ -39,7 +39,7 @@ mkdir checkpoints/
 python3 -m tetue.train kifu/kifu_2021-2023_r3500_eval5000.hcpe kifu/kifu_2021-2023_r3500_eval5000_test.hcpe -e 1 -b 2048 --lr 0.001 --eval_interval 1000
 ```
 
-### Environment
+### Tested GPU environment
 
 ```
 ❯ nvidia-smi -q | head
@@ -54,3 +54,8 @@ Attached GPUs                             : 1
 GPU 00000000:01:00.0
     Product Name                          : NVIDIA GeForce RTX 3070
 ```
+
+## Acknowledgements
+
+Tetue borrows [DeepLearningShogi](https://github.com/TadaoYamaoka/DeepLearningShogi/tree/master) for the search parts.
+A big thank you goes out to it.
