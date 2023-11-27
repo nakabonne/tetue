@@ -22,7 +22,7 @@ It will start wating for input from stdin.
 ### Download kifu from floodgate
 
 ```bash
-bash ./scripts/download-floodgate.sh <year> <year>
+bash ./scripts/download-floodgate.sh [year> <year>...]
 # e.g. bash ./scripts/download-floodgate.sh 2021 2022 2023
 ```
 
@@ -35,7 +35,7 @@ python3 ./scripts/csa_to_hcpe.py kifu/ kifu/kifu_2021-2023_r3500_eval5000.hcpe k
 ### Start training
 
 ```
-mkdir checkpoints/
+mkdir -p pcheckpoints/
 python3 -m tetue.train kifu/kifu_2021-2023_r3500_eval5000.hcpe kifu/kifu_2021-2023_r3500_eval5000_test.hcpe -e 1 -b 2048 --lr 0.001 --eval_interval 1000
 ```
 

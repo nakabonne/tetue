@@ -2,9 +2,9 @@
 set -e
 
 function usage() {
-    echo "Usage: $0 <year-1> <year-2>..."
-    echo "Example: $0 2021 2022 2023"
-    echo "-h | --help       Show this help message"
+    echo "Usage:       $0 [year-1> <year-2>...]"
+    echo "Example:     $0 2021 2022 2023"
+    echo "-h | --help  Show this help message"
 }
 
 while [ "$1" != "" ]; do
