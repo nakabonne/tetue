@@ -1,5 +1,5 @@
 # bonne
-Shogi AI with deep learning
+USI Shogi engine powered by deep learning.
 
 ## Install dependencies
 
