@@ -57,5 +57,5 @@ GPU 00000000:01:00.0
 
 ## Acknowledgements
 
-Tetue borrows [DeepLearningShogi](https://github.com/TadaoYamaoka/DeepLearningShogi/tree/master) for the search parts.
+Tetue borrows [DeepLearningShogi](https://github.com/TadaoYamaoka/DeepLearningShogi/tree/master)'s source code for the search parts.
 A big thank you goes out to it.
