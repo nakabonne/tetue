@@ -80,7 +80,7 @@ class MCTSUSI(BaseUSI):
     # USIエンジンの名前
     name = 'tetue'
     # TODO: Make model file variable
-    DEFAULT_MODELFILE = 'checkpoints/checkpoint-001.pth'
+    DEFAULT_MODELFILE = 'checkpoints/checkpoint-002.pth'
 
     def __init__(self):
         super().__init__()
