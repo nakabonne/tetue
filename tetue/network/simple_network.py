@@ -45,6 +45,6 @@ class SimpleNetwork(nn.Module):
         value = F.relu(value)
         value = torch.flatten(value, 1)
         value = self.value_fc1(value)
-        value = F.relu()
+        value = F.relu(value)
         value = self.value_fc2(value)
         return policy, value
