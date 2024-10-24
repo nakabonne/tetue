@@ -9,9 +9,9 @@ from tetue.features import MOVE_PLANES_NUM, MOVE_LABELS_NUM
 INPUT_CHANNELS = 104
 
 
-class SimpleCNN(nn.Module):
+class SimpleNetwork(nn.Module):
     def __init__(self):
-        super(SimpleCNN, self).__init__()
+        super(SimpleNetwork, self).__init__()
         num_filters = 192
         self.conv1 = nn.Conv2d(
             in_channels=INPUT_CHANNELS, out_channels=num_filters, kernel_size=3, padding=1, bias=True)

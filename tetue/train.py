@@ -4,6 +4,7 @@ import torch
 import torch.optim as optim
 
 from tetue.network.policy_value_resnet import PolicyValueNetwork
+from tetue.network.simple_network import SimpleNetwork
 from tetue.dataloader import HcpeDataLoader
 
 parser = argparse.ArgumentParser(description='Train policy value network')
@@ -40,7 +41,9 @@ else:
     logging.info('Using CPU')
 
 # モデル
-model = PolicyValueNetwork()
+# FIXME:
+# model = PolicyValueNetwork()
+model = SimpleNetwork()
 model.to(device)
 
 # オプティマイザ
