@@ -38,6 +38,8 @@ class ResNetBlock(nn.Module):
 class PolicyValueNetwork(nn.Module):
     def __init__(self, blocks=10, channels=192, fcl=256):
         super(PolicyValueNetwork, self).__init__()
+        # out_channel: the number of filters
+        # kernel_size: filter size
         # 畳み込み層
         self.conv1 = nn.Conv2d(
             in_channels=FEATURES_NUM, out_channels=channels, kernel_size=3, padding=1, bias=False)

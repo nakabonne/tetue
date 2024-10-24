@@ -34,8 +34,10 @@ logging.info('lr={}'.format(args.lr))
 # デバイス
 if args.gpu >= 0:
     device = torch.device(f"cuda:{args.gpu}")
+    logging.info('Using GPU {}'.format(args.gpu))
 else:
     device = torch.device("cpu")
+    logging.info('Using CPU')
 
 # モデル
 model = PolicyValueNetwork()
