@@ -119,16 +119,18 @@ for e in range(args.epoch):
     sum_loss_policy_epoch = 0
     sum_loss_value_epoch = 0
     for x, move_label, result in train_dataloader:
-        # FIXME: Remove
-        print(f'type of x: {type(x)}')
-        print(f'shape of x: {x.shape}')
-        print(f'type of move_label: {type(move_label)}')
-        print(f'type of result: {type(result)}')
-
         model.train()
 
         # 順伝播
         y1, y2 = model(x)
+
+        # FIXME: Remove
+        print(f'shape of x: {x.shape}')
+        print(f'shape of move_label: {move_label.shape}')
+        print(f'shape of result: {result.shape}')
+        print(f'shape of y1: {y1.shape}')
+        print(f'shape of y2: {y2.shape}')
+
         # 損失計算
         loss_policy = cross_entropy_loss(y1, move_label)
         loss_value = bce_with_logits_loss(y2, result)
