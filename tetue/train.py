@@ -42,8 +42,8 @@ else:
 
 # モデル
 # FIXME:
-model = PolicyValueNetwork()
-# model = SimpleNetwork()
+# model = PolicyValueNetwork()
+model = SimpleNetwork()
 model.to(device)
 
 # オプティマイザ
