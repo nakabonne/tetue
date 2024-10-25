@@ -1,5 +1,3 @@
-# FIXME: Improve this for experiments
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
