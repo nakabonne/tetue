@@ -121,7 +121,7 @@ for e in range(args.epoch):
     for x, move_label, result in train_dataloader:
         # FIXME: Remove
         print(f'type of x: {type(x)}')
-        print(f'shape of x: {x.shape()}')
+        print(f'shape of x: {x.shape}')
         print(f'type of move_label: {type(move_label)}')
         print(f'type of result: {type(result)}')
 
