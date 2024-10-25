@@ -9,15 +9,6 @@ from tetue.features import MOVE_PLANES_NUM, MOVE_LABELS_NUM
 INPUT_CHANNELS = 104
 
 
-class Bias(nn.Module):
-    def __init__(self, shape):
-        super(Bias, self).__init__()
-        self.bias = nn.Parameter(torch.zeros(shape))
-
-    def forward(self, input):
-        return input + self.bias
-
-
 class SimpleNetwork(nn.Module):
     def __init__(self):
         super(SimpleNetwork, self).__init__()
@@ -29,7 +20,7 @@ class SimpleNetwork(nn.Module):
         # policy head
         self.policy_conv = nn.Conv2d(
             in_channels=num_filters, out_channels=MOVE_PLANES_NUM, kernel_size=1, bias=False)
-        self.policy_bias = Bias(MOVE_LABELS_NUM)
+        # self.policy_bias = Bias(MOVE_LABELS_NUM)
 
         # value head
         self.value_conv1 = nn.Conv2d(
@@ -46,7 +37,8 @@ class SimpleNetwork(nn.Module):
 
         # policy head
         policy = self.policy_conv(x)
-        policy = self.policy_bias(torch.flatten(policy, 1))
+        # policy = self.policy_bias(torch.flatten(policy, 1))
+        policy = torch.flatten(policy, 1)
 
         # value head
         value = self.value_conv1(x)
