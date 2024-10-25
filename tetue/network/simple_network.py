@@ -37,7 +37,7 @@ class SimpleNetwork(nn.Module):
 
         # policy head
         policy = self.policy_conv(x)
-        # policy = self.policy_bias(torch.flatten(policy, 1))
+        policy = self.policy_bias(torch.flatten(policy, 1))
 
         # value head
         value = self.value_conv1(x)
