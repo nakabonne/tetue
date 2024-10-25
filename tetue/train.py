@@ -42,8 +42,8 @@ else:
 
 # モデル
 # FIXME:
-# model = PolicyValueNetwork()
-model = SimpleNetwork()
+model = PolicyValueNetwork()
+# model = SimpleNetwork()
 model.to(device)
 
 # オプティマイザ
@@ -128,8 +128,8 @@ for e in range(args.epoch):
         print(f'shape of x: {x.shape}')
         print(f'shape of move_label: {move_label.shape}')
         print(f'shape of result: {result.shape}')
-        print(f'shape of y1: {y1.shape}')
-        print(f'shape of y2: {y2.shape}')
+        print(f'shape of output of policy: {y1.shape}')
+        print(f'shape of output of value: {y2.shape}')
 
         # 損失計算
         loss_policy = cross_entropy_loss(y1, move_label)
