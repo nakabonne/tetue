@@ -119,6 +119,12 @@ for e in range(args.epoch):
     sum_loss_policy_epoch = 0
     sum_loss_value_epoch = 0
     for x, move_label, result in train_dataloader:
+        # FIXME: Remove
+        print(f'type of x: {type(x)}')
+        print(f'shape of x: {x.shape()}')
+        print(f'type of move_label: {type(move_label)}')
+        print(f'type of result: {type(result)}')
+
         model.train()
 
         # 順伝播
