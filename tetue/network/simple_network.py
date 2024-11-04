@@ -36,7 +36,6 @@ class SimpleNetwork(nn.Module):
         self.conv1 = nn.Conv2d(
             in_channels=INPUT_CHANNELS, out_channels=num_filters, kernel_size=3, padding=1, bias=True)
         self.norm1 = nn.BatchNorm2d(num_filters)
-        # self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
 
         # resnet blocks
         self.blocks = nn.Sequential(
@@ -58,17 +57,17 @@ class SimpleNetwork(nn.Module):
         x = self.conv1(x)
         x = self.norm1(x)
         x = F.relu(x)
-        # x = self.pool()
 
         x = self.blocks(x)
 
         # policy head
         policy = self.policy_conv(x)
         policy = torch.flatten(policy, 1)
+        # FIXME: Add bias
 
         # value head
         value = self.value_conv1(x)
-        # value = self.value_norm1(value)
+        value = self.value_norm1(value)
         value = F.relu(value)
         value = torch.flatten(value, 1)
         value = self.value_fc1(value)
