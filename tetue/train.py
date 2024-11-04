@@ -209,7 +209,7 @@ for e in range(args.epoch):
             sum_test_accuracy_value += binary_accuracy(y2, result)
 
     # テストデータの検証結果をログ表示
-    logging.info('epoch = {}, steps = {}, train loss avr = {:.07f}, {:.07f}, {:.07f}, test loss = {:.07f}, {:.07f}, {:.07f}, test accuracy = {:.07f}, {:.07f}'.format(
+    logging.info('epoch = {}, steps = {}, train loss avr = {:.07f}, {:.07f}, {:.07f}, test loss = {:.07f}, {:.07f}, {:.07f}, test accuracy = (policy:{:.07f}, value:{:.07f})'.format(
         epoch, t,
         sum_loss_policy_epoch / steps_epoch,
         sum_loss_value_epoch / steps_epoch,

@@ -7,14 +7,40 @@ from tetue.features import MOVE_PLANES_NUM, MOVE_LABELS_NUM
 INPUT_CHANNELS = 104
 
 
+class ResNetBlock(nn.Module):
+    def __init__(self, channels):
+        super(ResNetBlock, self).__init__()
+        self.conv1 = nn.Conv2d(
+            channels, channels, kernel_size=3, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(channels)
+        self.conv2 = nn.Conv2d(
+            channels, channels, kernel_size=3, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(channels)
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = F.relu(out)
+
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        return F.relu(out + x)
+
+
 class SimpleNetwork(nn.Module):
     def __init__(self):
         super(SimpleNetwork, self).__init__()
         num_filters = 192
+        blocks = 10
         self.conv1 = nn.Conv2d(
             in_channels=INPUT_CHANNELS, out_channels=num_filters, kernel_size=3, padding=1, bias=True)
         self.norm1 = nn.BatchNorm2d(num_filters)
         # self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+
+        # resnet blocks
+        self.blocks = nn.Sequential(
+            *[ResNetBlock(num_filters) for _ in range(blocks)])
 
         # policy head
         self.policy_conv = nn.Conv2d(
@@ -34,9 +60,10 @@ class SimpleNetwork(nn.Module):
         x = F.relu(x)
         # x = self.pool()
 
+        x = self.blocks(x)
+
         # policy head
         policy = self.policy_conv(x)
-        # policy = self.policy_bias(torch.flatten(policy, 1))
         policy = torch.flatten(policy, 1)
 
         # value head
