@@ -66,15 +66,6 @@ class SimpleNetwork(nn.Module):
         x = F.relu(x)
         x = self.blocks(x)
 
-        # ResNet block
-        x = self.conv2(x)
-        x = self.norm1(x)
-        x = F.relu(x)
-        x = self.conv2(x)
-        x = self.norm1(x)
-        x = F.relu(x)
-        x = self.blocks(x)
-
         # policy head
         policy = self.policy_conv(x)
         policy = torch.flatten(policy, 1)
