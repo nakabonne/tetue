@@ -37,6 +37,9 @@ class SimpleNetwork(nn.Module):
             in_channels=INPUT_CHANNELS, out_channels=num_filters, kernel_size=3, padding=1, bias=True)
         self.norm1 = nn.BatchNorm2d(num_filters)
 
+        self.conv2 = nn.Conv2d(
+            in_channels=num_filters, out_channels=num_filters, kernel_size=3, padding=1, bias=True)
+
         # resnet blocks
         self.blocks = nn.Sequential(
             *[ResNetBlock(num_filters) for _ in range(blocks)])
@@ -54,10 +57,22 @@ class SimpleNetwork(nn.Module):
         self.value_fc2 = nn.Linear(256, 1)
 
     def forward(self, x):
+        # ResNet block
         x = self.conv1(x)
         x = self.norm1(x)
         x = F.relu(x)
+        x = self.conv2(x)
+        x = self.norm1(x)
+        x = F.relu(x)
+        x = self.blocks(x)
 
+        # ResNet block
+        x = self.conv1(x)
+        x = self.norm1(x)
+        x = F.relu(x)
+        x = self.conv2(x)
+        x = self.norm1(x)
+        x = F.relu(x)
         x = self.blocks(x)
 
         # policy head
