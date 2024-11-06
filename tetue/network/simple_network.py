@@ -61,9 +61,6 @@ class SimpleNetwork(nn.Module):
         x = self.conv1(x)
         x = self.norm1(x)
         x = F.relu(x)
-        x = self.conv2(x)
-        x = self.norm1(x)
-        x = F.relu(x)
         x = self.blocks(x)
 
         # policy head
